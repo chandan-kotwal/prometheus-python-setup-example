@@ -1,0 +1,26 @@
+version: '0.1'
+
+services:
+  my-prometheus:
+    image: prom/prometheus
+    container_name: my-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  python-app:
+    build:
+      context: ./pythonserver
+      dockerfile: Dockerfile
+    container_name: python-server
+    ports:
+      - "8000:8000"
+    environment:
+      - YOUTUBE_API_KEY=YOUR_YOUTUBE_KEY_HERE
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
